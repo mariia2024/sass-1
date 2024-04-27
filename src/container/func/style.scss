@@ -1,0 +1,96 @@
+@function content($value, $num) {
+	// $text: "Hello" + " " + $value;
+
+	// $text: 5 % 3 + "";
+	// @return $value != "Hello" and $num == 10;
+	// @return $value != "Hello" or $num == 10;
+	@if $num == 10 or $value == "Hello" {
+		@return 10px;
+	}
+
+	@if $num == 20 {
+		@return 100px;
+	}
+}
+
+@function fontSize() {
+	@return 20;
+}
+
+@function spacion($num) {
+	@return #{$num * 4}px;
+}
+
+@function calcCenter($size){
+	@return calc(50% - ($size / 2));
+}
+
+@function getIcon($name) {
+	$icon: "";
+
+	@if($name == "burger") {
+		$icon: "/icon/header/burger.svg";
+	}
+
+	@if($name == "user") {
+		$icon: "/icon/dashboard/user.svg";
+	}
+
+	@return url(#{$icon});
+}
+
+@mixin button($type: null, $size: null) {
+	display: inline-block;
+	width: fit-content;
+	border-radius: 12px;
+	text-align: center;
+
+	@if $type == "primary" {
+		background-color: aqua;
+	} @else if $type == "secondary" {
+		background-color: rgb(81, 255, 0);
+	} @else {
+		background-color: red;
+	} 
+
+	@if $size == "big" {
+		padding: spacion(4) spacion(6);
+	}	@else if $size == "small" {
+		padding: spacion(1) spacion(2);
+	} @else {
+		padding: spacion(2) spacion(4);
+	}
+
+	@if $type == $size {
+		@error "Tupe не може бути як Size";
+	}
+
+}
+
+.wrapper::after {
+  content: "World";
+
+	// background-image: content("Hello", 20);
+	background-image: getIcon("user");
+
+  font-size: #{fontSize()}px;
+  position: absolute;
+  height: 40px;
+  min-width: 40px;
+  top: calcCenter(40px);
+  background: #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: spacion(4);
+}
+
+.wrapper {
+	display: grid;
+	gap: spacion(5);
+	padding: spacion(4);
+}
+
+.button {
+	@include button("secondary", "small");
+}
